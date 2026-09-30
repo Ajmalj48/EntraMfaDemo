@@ -1,0 +1,59 @@
+@using System.Security.Claims
+
+@{
+    ViewBag.Title = "Secure Page";
+
+    var identity = User.Identity as ClaimsIdentity;
+}
+
+<h2>Authentication Successful</h2>
+
+<div class="alert alert-success">
+    You are authenticated with Microsoft Entra ID.
+</div>
+
+<h3>Basic Authentication Information</h3>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Is Authenticated</th>
+        <td>@User.Identity.IsAuthenticated</td>
+    </tr>
+
+    <tr>
+        <th>Authentication Type</th>
+        <td>@User.Identity.AuthenticationType</td>
+    </tr>
+
+    <tr>
+        <th>Name</th>
+        <td>@User.Identity.Name</td>
+    </tr>
+</table>
+
+
+<h3>Microsoft Entra ID Claims</h3>
+
+<table class="table table-bordered table-striped">
+
+    @if (identity != null)
+    {
+        foreach (var claim in identity.Claims)
+        {
+            <tr>
+                <th>@claim.Type</th>
+                <td style="word-break:break-all">
+                    @claim.Value
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+<br />
+
+<a href="@Url.Action("Logout", "Account")"
+   class="btn btn-danger">
+    Logout
+</a>
